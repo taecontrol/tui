@@ -1,4 +1,4 @@
-package navbar
+package item
 
 import (
 	"fmt"
@@ -6,29 +6,28 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-type ItemUpdatedMsg struct {
-	Item Item
+type UpdatedMsg struct {
+	Item Model
 }
 
-type Item struct {
+type Model struct {
 	Label       string
 	ShortcutKey string
 	IsActive    bool
-	IsLast      bool
 }
 
-func (i Item) Init() tea.Cmd {
+func (i Model) Init() tea.Cmd {
 	return nil
 }
 
-func (i Item) Update(msg tea.Msg) (Item, tea.Cmd) {
+func (i Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		if msg.String() == i.ShortcutKey {
 			i.IsActive = true
 			return i, i.ItemUpdated
 		}
-	case ItemUpdatedMsg:
+	case UpdatedMsg:
 		if i.ShortcutKey != msg.Item.ShortcutKey {
 			i.IsActive = false
 		}
@@ -38,7 +37,7 @@ func (i Item) Update(msg tea.Msg) (Item, tea.Cmd) {
 	return i, nil
 }
 
-func (i Item) View() string {
+func (i Model) View() string {
 	style := lipgloss.NewStyle()
 	if i.IsActive {
 		style = style.Bold(true)
@@ -58,8 +57,8 @@ func (i Item) View() string {
 		Render(fmt.Sprintf("%s %s", shortcutKeyString, labelString))
 }
 
-func (i Item) ItemUpdated() tea.Msg {
-	return ItemUpdatedMsg{
+func (i Model) ItemUpdated() tea.Msg {
+	return UpdatedMsg{
 		Item: i,
 	}
 }

@@ -6,13 +6,13 @@ import (
 	"github.com/charmbracelet/x/term"
 	components "github.com/taecontrol/tui/layout"
 	"github.com/taecontrol/tui/navigation/item"
-	"github.com/taecontrol/tui/navigation/navbar"
+	"github.com/taecontrol/tui/navigation/sidebar"
 	"os"
 )
 
 type Model struct {
 	Width, Height int
-	Navbar        navbar.Model
+	Sidebar       sidebar.Model
 }
 
 func (Model) Init() tea.Cmd {
@@ -21,7 +21,7 @@ func (Model) Init() tea.Cmd {
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var navCmd tea.Cmd
-	m.Navbar, navCmd = m.Navbar.Update(msg)
+	m.Sidebar, navCmd = m.Sidebar.Update(msg)
 
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
@@ -38,8 +38,8 @@ func (m Model) View() string {
 	return components.NewLayout(
 		m.Height,
 		m.Width,
-		"Navbar example",
-		components.WithHeader(m.Navbar.View()),
+		"Sidebar example",
+		components.WithLeftSidebar(m.Sidebar.View()),
 	).Render()
 }
 
@@ -49,7 +49,9 @@ func main() {
 	p := tea.NewProgram(Model{
 		Width:  width,
 		Height: height,
-		Navbar: navbar.New(
+		Sidebar: sidebar.New(
+			width/6,
+			height,
 			"My App",
 			[]item.Model{
 				{Label: "Home", ShortcutKey: "h", IsActive: true},
