@@ -2,7 +2,7 @@ package main
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
-	components "github.com/taecontrol/tui/layout"
+	"github.com/taecontrol/tui/layout"
 	"github.com/taecontrol/tui/navigation/item"
 	"github.com/taecontrol/tui/navigation/navbar"
 )
@@ -43,10 +43,10 @@ func (m About) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m About) View() string {
-	return components.NewLayout(
+	return layout.NewLayout(
 		m.Height,
 		m.Width,
 		"About",
-		components.WithHeader(m.Navbar.View()),
+		layout.WithHeader(m.Navbar.View()),
 	).Render()
 }

@@ -1,6 +1,7 @@
 module github.com/taecontrol/tui/examples/multiple_pages
 
 go 1.22.3
+replace github.com/taecontrol/tui => ../../
 
 require (
 	github.com/charmbracelet/bubbletea v0.26.4
